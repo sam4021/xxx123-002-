@@ -1,0 +1,29 @@
+page-login {
+
+  .background{
+    background-image: url('../assets/abstract.jpg');
+  }
+  .login-logo{
+    padding-top: 10px;
+    padding-left: 0px;
+    padding-right: 50px;
+    padding-bottom: 0px;
+  }
+  .card{
+
+  }
+  h1{
+    text-align: center;
+    color: #ffa500;
+  }
+  .item{
+    background: rgba(255,255,255,0);
+    height: 30px;
+  }
+  .item .input .placeholder{
+    color: #fff;
+  }
+  .item .input{
+    color: #fff;
+  }
+}

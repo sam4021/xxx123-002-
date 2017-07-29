@@ -1,0 +1,19 @@
+page-signup {
+  h1{
+    text-align: center;
+    color: #ffa500;
+  }
+  .item{
+    background: rgba(255,255,255,0);
+    height: 30px;
+  }
+  .item .label{
+    color: #fff;
+  }
+  .item .input{
+    color: #fff;
+  }
+  .content{
+    background-image: url('../assets/abstract.jpg');
+  }
+}

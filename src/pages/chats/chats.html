@@ -1,0 +1,144 @@
+<!--
+  Generated template for the ChatsPage page.
+
+  See http://ionicframework.com/docs/components/#navigation for more info on
+  Ionic pages and navigation.
+-->
+<ion-header>
+
+  <ion-navbar>
+    <ion-title>chats</ion-title>
+  </ion-navbar>
+
+</ion-header>
+
+
+<ion-content>
+  <ion-input [(ngModel)]="username" type="text" id="username" value="Client1" disabled></ion-input>
+  <hr>
+  <ion-list>
+    <div *ngFor="let data of messages">
+      <ion-item *ngIf="username === data.username">
+        <p class="chat-text" item-left>
+          <strong>{{data.username}}:</strong>
+          {{data.message}}
+        </p>
+        <p class="chat-time" item-right>
+          {{data.date | date:'dd/MM/yyyy'}}
+        </p>
+      </ion-item>
+      <ion-item *ngIf="username !== data.username">
+        <p class="chat-text" item-left>
+          <strong>{{data.username}}:</strong>
+          {{data.message}}
+        </p>
+        <p class="chat-time" item-right>
+          {{data.date | date:'dd/MM/yyyy'}}
+        </p>
+      </ion-item>
+    </div>
+  </ion-list>
+  <!-- <h6>Rider</h6><hr>
+  <ion-grid>
+    <form (ngSubmit)="onSubmit()">
+    <ion-row padding-right>
+      <ion-col col-12>
+        <div id="status"></div>
+        <ion-item id="chat">
+
+          <div id="messages"></div>
+        </ion-item>
+      </ion-col>
+      <ion-col col-8>
+        <ion-item>
+          <ion-label></ion-label>
+          <ion-textarea id="msg-block" type="password" placeholder="Enter Message....."></ion-textarea>
+        </ion-item>
+      </ion-col>
+      <ion-col col-4>
+        <button ion-button block type="submit">LOGIN</button>
+      </ion-col>
+    </ion-row>
+    </form>
+  </ion-grid> -->
+</ion-content>
+<ion-footer>
+  <form #f="ngForm">
+    <ion-grid>
+      <ion-row>
+        <ion-col width-80>
+          <ion-input [(ngModel)]="chat" name="chatText" required placeholder="Enter message"></ion-input>
+        </ion-col>
+        <ion-col width-20 center>
+          <button (click)="chatSend(f.value, f.valid)" ion-button color="light" full [disabled]="f.valid=== false">Send</button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </form>
+</ion-footer>
+
+
+<script>
+  (function(){
+    var element = function(id){
+      return document.getElementById(id);
+    }
+
+    //Get Elements
+    var status = element('status');
+    var messages = element('messages');
+    var textarea = element('msg-block');
+    var username = element('username');
+
+    //Set Default Status
+    var statusDefault = status.textContent;
+
+    var setStatus = function(s){
+      //Set Status
+      status.textContent = s;
+
+      if(s !== statusDefault){
+        var delay = setTimeout(function(){
+          setStatus(statusDefault);
+        }, 4000);
+      }
+    }
+
+    //connect to socket.io
+    var socket = io.connect('http:127.0.0.1:8101');
+
+    //Check for connection
+    if (socket !== undefined) {
+      console.log('connected to Socket......');
+
+      socket.on('output',function(data){
+        console.log(data);
+        if (data.length) {
+          for (var i = 0; i < data.length; i++) {
+            // Build Out Message Div
+            var message = document.createElement('div');
+            message.setAttribute('class','chat-message');
+            message.textContent = data[i].name+": "+data[i].message;
+            messages.appendChild(message);
+            messages.insertBefore(message,messages.firstChild)
+          }
+        }
+      });
+
+      //Get Status From Server
+      socket.on('status', function(data){
+        //get Message status
+        setStatus((typeof data === 'object')? data.message : data);
+
+
+      });
+
+      //Handle Input
+      textarea.addEventListener('keydown')
+    } else {
+      console.log('Not connected to Socket......');
+    }
+
+
+  })();
+</script>
